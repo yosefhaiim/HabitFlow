@@ -1,0 +1,6 @@
+Flask==2.3.2
+pymongo==4.6.1
+dnspython==2.4.1  # אם תשתמש ב-Atlas
+python-dotenv==1.0.0  # לניהול סביבה
+bcrypt==4.0.1
+PyJWT==2.8.0
