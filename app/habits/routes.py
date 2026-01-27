@@ -1,6 +1,7 @@
 from flask import Blueprint
 from flask import request
 
+from app.habits.repository import get_habits_by_user
 from app.auth.middleware import jwt_required
 from app.habits.models import build_habit
 from app.habits.repository import create_habit
@@ -34,3 +35,15 @@ def create_habit_route():
 @jwt_required
 def protected_test():
     return {"message": "Access granted"}
+
+
+@habits_bp.route("", methods=["GET"])
+@jwt_required
+def get_habits_route():
+    habits = get_habits_by_user(request.user_id)
+
+    for habit in habits:
+        habit["_id"] = str(habit["_id"])
+
+    return {"habits": habits}, 200
+
