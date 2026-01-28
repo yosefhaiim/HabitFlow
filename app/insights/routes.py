@@ -13,10 +13,6 @@ from app.insights.logic import (
 
 insights_bp = Blueprint("insights", __name__, url_prefix="/insights")
 
-@insights_bp.route("/health")
-def insights_health():
-    return {"module": "insights", "status": "ok"}
-
 
 @insights_bp.route("/habit", methods=["GET"])
 @jwt_required
