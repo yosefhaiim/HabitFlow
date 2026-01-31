@@ -1,4 +1,5 @@
 def success_response(data=None, message=None, status_code=200):
+    """Return a standardized successful API response."""
     response = {"success": True}
 
     if message:
@@ -10,7 +11,10 @@ def success_response(data=None, message=None, status_code=200):
 
 
 def error_response(message, status_code=400):
+    """Return a standardized error API response."""
     return {
         "success": False,
         "error": message
     }, status_code
+
+

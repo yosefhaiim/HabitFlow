@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 
 
 def analyze_entries(entries):
+    """Analyze habit entries to calculate success rate and weak days."""
     total = len(entries)
     if total == 0:
         return {
@@ -33,6 +34,7 @@ def analyze_entries(entries):
 
 
 def calculate_streaks(entries):
+    """Calculate current and maximum streaks of habit completion."""
     if not entries:
         return {"current_streak": 0, "max_streak": 0}
 
@@ -67,6 +69,7 @@ def calculate_streaks(entries):
 
 
 def generate_recommendations(analysis, streaks):
+    """Generate personalized recommendations based on user behavior."""
     recommendations = []
 
     if analysis["weak_days"]:

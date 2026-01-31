@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from flask import current_app
 
 def create_access_token(user_id: str):
+    """Generate a JWT access token for a given user ID."""
     payload = {
         "sub": user_id,
         "exp": datetime.utcnow() + timedelta(hours=2)

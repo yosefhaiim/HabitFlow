@@ -10,6 +10,7 @@ def get_entries_for_habit(habit_id, user_id):
     }))
 
 def entry_exists(habit_id, user_id, date):
+    """Check if a habit entry already exists for a given date."""
     return db.entries.find_one({
         "habit_id": habit_id,
         "user_id": user_id,

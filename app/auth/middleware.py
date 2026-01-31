@@ -2,7 +2,10 @@ import jwt
 from functools import wraps
 from flask import request, current_app
 
+
+
 def jwt_required(func):
+    """Protect routes by requiring a valid JWT access token."""
     @wraps(func)
     def wrapper(*args, **kwargs):
         auth_header = request.headers.get("Authorization")
