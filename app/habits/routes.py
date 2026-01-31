@@ -5,6 +5,7 @@ from app.habits.repository import get_habits_by_user
 from app.auth.middleware import jwt_required
 from app.habits.models import build_habit
 from app.habits.repository import create_habit
+from app.utils.responses import success_response, error_response
 
 habits_bp = Blueprint("habits", __name__, url_prefix="/habits")
 
@@ -19,12 +20,12 @@ def create_habit_route():
     frequency = data.get("frequency")
 
     if not title or not frequency:
-        return {"error": "title and frequency are required"}, 400
+        return error_response("title and frequency are required", 400)
 
     habit = build_habit(request.user_id, title, frequency)
     create_habit(habit)
 
-    return {"message": "Habit created"}, 201
+    return success_response("Habit created", 201)
 
 
 @habits_bp.route("/protected")
@@ -41,5 +42,7 @@ def get_habits_route():
     for habit in habits:
         habit["_id"] = str(habit["_id"])
 
-    return {"habits": habits}, 200
+
+
+    return success_response(f"habits: {habits}", 200)
 

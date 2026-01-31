@@ -8,3 +8,10 @@ def get_entries_for_habit(habit_id, user_id):
         "habit_id": habit_id,
         "user_id": user_id
     }))
+
+def entry_exists(habit_id, user_id, date):
+    return db.entries.find_one({
+        "habit_id": habit_id,
+        "user_id": user_id,
+        "date": date
+    })
