@@ -22,3 +22,22 @@ def delete_entries_by_habit(habit_id, user_id):
         "habit_id": habit_id,
         "user_id": user_id
     })
+
+def get_entry_by_id(entry_id, user_id):
+    return db.entries.find_one({
+        "_id": entry_id,
+        "user_id": user_id
+    })
+
+def update_entry(entry_id, user_id, updates):
+    return db.entries.update_one(
+        {"_id": entry_id, "user_id": user_id},
+        {"$set": updates}
+    )
+
+
+def delete_entry(entry_id, user_id):
+    return db.entries.delete_one({
+        "_id": entry_id,
+        "user_id": user_id
+    })
