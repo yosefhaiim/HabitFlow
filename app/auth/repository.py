@@ -5,3 +5,6 @@ def get_user_by_email(email):
 
 def create_user(user_data):
     return db.users.insert_one(user_data)
+
+def delete_user(user_id):
+    return db.users.delete_one({"_id": user_id})

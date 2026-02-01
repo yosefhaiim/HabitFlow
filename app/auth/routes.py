@@ -1,12 +1,15 @@
 from flask import Blueprint, request
 
+from app.auth.middleware import jwt_required
 from app.auth.repository import get_user_by_email, create_user
 from app.auth.models import build_user
 from app.auth.security import hash_password
 from app.auth.security import verify_password
 from app.auth.jwt_utils import create_access_token
 from app.utils.responses import error_response, success_response
-
+from app.auth.repository import delete_user
+from app.habits.repository import delete_habits_by_user
+from app.entries.repository import delete_entries_by_user
 
 
 
@@ -51,3 +54,18 @@ def login():
 
     token = create_access_token(str(user["_id"]))
     return success_response(f"access_token: {token}",200)
+
+
+
+@auth_bp.route("/me", methods=["DELETE"])
+@jwt_required
+def delete_me():
+    user_id = request.user_id
+
+    delete_entries_by_user(user_id)
+    delete_habits_by_user(user_id)
+    delete_user(user_id)
+
+    return success_response(
+        message="User and all related data deleted successfully"
+    )

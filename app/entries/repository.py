@@ -41,3 +41,7 @@ def delete_entry(entry_id, user_id):
         "_id": entry_id,
         "user_id": user_id
     })
+
+
+def delete_entries_by_user(user_id):
+    db.entries.delete_many({"user_id": user_id})

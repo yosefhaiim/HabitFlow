@@ -28,3 +28,6 @@ def delete_habit(habit_id, user_id):
         "_id": habit_id,
         "user_id": user_id
     })
+
+def delete_habits_by_user(user_id):
+    db.habits.delete_many({"user_id": user_id})
