@@ -15,3 +15,16 @@ def get_habit_by_id(habit_id, user_id):
     })
 
 
+def update_habit(habit_id, user_id, updates):
+    return db.habits.update_one(
+        {"_id": habit_id, "user_id": user_id},
+        {"$set": updates}
+    )
+
+
+
+def delete_habit(habit_id, user_id):
+    return db.habits.delete_one({
+        "_id": habit_id,
+        "user_id": user_id
+    })

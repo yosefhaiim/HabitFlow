@@ -16,3 +16,9 @@ def entry_exists(habit_id, user_id, date):
         "user_id": user_id,
         "date": date
     })
+
+def delete_entries_by_habit(habit_id, user_id):
+    db.entries.delete_many({
+        "habit_id": habit_id,
+        "user_id": user_id
+    })
