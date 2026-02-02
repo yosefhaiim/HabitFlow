@@ -4,31 +4,45 @@ from datetime import datetime, timedelta
 
 
 def analyze_entries(entries):
-    """Analyze habit entries to calculate success rate and weak days."""
+    """
+    Analyze habit entries to calculate success rate,
+    weak days, and per-day statistics.
+    """
+
     total = len(entries)
-    if total == 0:
-        return {
-            "success_rate": 0,
-            "weak_days": []
-        }
+    success = sum(1 for e in entries if e["status"] is True)
 
-    success_count = sum(1 for e in entries if e["status"] is True)
+    success_rate = (success / total * 100) if total > 0 else 0
 
-    by_weekday = defaultdict(list)
-    for e in entries:
-        date = datetime.fromisoformat(e["date"])
-        weekday = date.strftime("%A")
-        by_weekday[weekday].append(e["status"])
+    day_stats = defaultdict(lambda: {"success": 0, "fail": 0})
 
-    weak_days = []
-    for day, statuses in by_weekday.items():
-        rate = sum(statuses) / len(statuses)
-        if rate < 0.5:
-            weak_days.append(day)
+    for entry in entries:
+        date_obj = datetime.fromisoformat(entry["date"])
+        day_name = date_obj.strftime("%A")
+
+        if entry["status"]:
+            day_stats[day_name]["success"] += 1
+        else:
+            day_stats[day_name]["fail"] += 1
+
+    weak_days = [
+        day for day, stats in day_stats.items()
+        if stats["fail"] > stats["success"]
+    ]
+
+    worst_day = None
+    max_failures = 0
+
+    for day, stats in day_stats.items():
+        if stats["fail"] > max_failures:
+            max_failures = stats["fail"]
+            worst_day = day
 
     return {
-        "success_rate": round(success_count / total * 100, 2),
-        "weak_days": weak_days
+        "success_rate": round(success_rate, 2),
+        "weak_days": weak_days,
+        "day_stats": dict(day_stats),
+        "worst_day": worst_day
     }
 
 
