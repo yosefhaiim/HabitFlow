@@ -6,7 +6,7 @@ from app.auth.routes import auth_bp
 from app.habits.routes import habits_bp
 from app.entries.routes import entries_bp
 from app.insights.routes import insights_bp
-
+from app.scheduler import start_scheduler
 
 
 def create_app(config_class=Config):
@@ -22,6 +22,7 @@ def create_app(config_class=Config):
     def health_check():
         return {"status": "ok"}
 
+    start_scheduler()
     app.register_blueprint(habits_bp)
     app.register_blueprint(entries_bp)
     app.register_blueprint(insights_bp)

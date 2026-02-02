@@ -19,11 +19,17 @@ def create_habit_route():
 
     title = data.get("title")
     frequency = data.get("frequency")
+    reminder_time = data.get("reminder_time")  # "HH:MM"
 
     if not title or not frequency:
         return error_response("title and frequency are required", 400)
 
-    habit = build_habit(request.user_id, title, frequency)
+    habit = build_habit(
+        request.user_id,
+        title,
+        frequency,
+        reminder_time
+    )
     create_habit(habit)
 
     return success_response("Habit created", 201)
@@ -43,8 +49,6 @@ def get_habits_route():
     for habit in habits:
         habit["_id"] = str(habit["_id"])
 
-
-
     return success_response(f"habits: {habits}", 200)
 
 
@@ -55,6 +59,10 @@ def update_habit_route(habit_id):
 
     allowed_fields = {"title", "frequency"}
     updates = {k: v for k, v in data.items() if k in allowed_fields}
+
+    if "reminder_time" in data:
+        updates["reminder_time"] = data["reminder_time"]
+        updates["reminder_enabled"] = True
 
     if not updates:
         return error_response("No valid fields to update", 400)
